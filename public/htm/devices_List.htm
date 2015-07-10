@@ -1,0 +1,31 @@
+ <h3>Devices</h3>
+
+<table class="table table-striped">
+  <thead><tr>
+    <th>Status</th>
+    <th>Name</th>
+    <th>Tags</th>
+	<th>Actions</th>
+  </tr></thead>
+  <tbody><tr ng-repeat="device in devices">
+    <td>
+		<button class="btn btn-success" ng-click="editDevice(device.id)">
+			{{ device.status }}
+		</button>
+	</td>
+    <td>
+		<button class="btn">
+			{{ device.name }}
+		</button>
+    </td>
+	<td>{{ device.tags }}</td>
+	<td>
+      <button class="btn" ng-click="editDevice(device.id)">
+        <span class="glyphicon glyphicon-pencil"></span>
+      </button>
+	  <button class="btn" >
+        <span class="glyphicon glyphicon-user"></span>
+      </button>
+    </td>
+  </tr></tbody>
+</table> 

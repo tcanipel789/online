@@ -1,0 +1,21 @@
+ <!DOCTYPE html>
+<html ng-app="onlineApp">
+<link rel="stylesheet" href="../css/bootstrap.min.css">
+<script src="../lib/angular.min.js"></script>
+<script src="../lib/ui-bootstrap-0.13.0.min.js"></script>
+
+
+<body>
+
+<nav class="navbar navbar-default" ng-include="'./htm/nav.htm'"></nav>
+
+<div class="container" ng-controller="deviceCtrl">
+	<div ng-include="'./htm/devices_List.htm'"></div>
+	<div ng-include="'./htm/devices_Form.htm'"></div>
+</div>
+
+<script src = "../js/onlineApp.js"></script>
+<script src="../js/DevicesCtrl.js"></script>
+
+</body>
+</html>
