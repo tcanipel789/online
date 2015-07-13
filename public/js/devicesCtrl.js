@@ -3,11 +3,6 @@ $scope.isVisible = false;
 $scope.status = '';
 $scope.name = '';
 $scope.tags = '';
-$scope.dynamicPopover = {
-    content: 'Hello, World!',
-    title: 'Title'
-  };
-
 
 $scope.devices = [
 {id:'1', status:'offline', name:'i5-test',  tags: 'test'},
@@ -18,6 +13,7 @@ $scope.devices = [
 {id:'6', status:'offline', name:'i5-test',  tags: 'test'},
 {id:'7', status:'offline', name:'i5-test',  tags: 'test'}
 ];
+
 $scope.edit = true;
 $scope.error = false;
 $scope.incomplete = false;
