@@ -7,17 +7,23 @@ var app = express();
 
 app.use(express.static('public'));
 
+
 app.get("/players",function(req,res){
 	res.sendfile("./public/htm/players.html");
 });
 
-
-
-
-app.get("/search",function(req,res){
-	console.log(req.query);
-	
-	res.send(req.query);
+app.get("/players/devices",function(req,res){
+	console.log("GET > retrieving devices");
+	var devices = [
+		{id:'1', status:'offline', name:'i5-test1',  tags: 'test'},
+		{id:'2', status:'offline', name:'i5-test2',  tags: 'test'},
+		{id:'3', status:'offline', name:'i5-test3',  tags: 'test'},
+		{id:'4', status:'offline', name:'i5-test4',  tags: 'test'},
+		{id:'5', status:'offline', name:'i5-test5',  tags: 'test'},
+		{id:'6', status:'offline', name:'i5-test6',  tags: 'test'},
+		{id:'7', status:'offline', name:'i5-test7',  tags: 'test'}
+		];
+	res.send(devices);
 });
 
 app.post("/form",function(req,res){
@@ -41,7 +47,7 @@ app.put("/:ID/:NAME",function(req,res){
 	
 });
 
-var server = app.listen(80, function () {
+var server = app.listen(8080, function () {
 
   var host = server.address().address;
   var port = server.address().port;

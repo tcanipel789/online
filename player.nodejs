@@ -1,0 +1,22 @@
+var omx = require("omxdirector");
+var spawn = require('child_process').spawn;
+
+var omxProcess = null;
+
+var open = function (videos, options) {
+
+	var cmd = 'omxplayer';
+	
+	omxProcess = spawn(cmd, "./carlipa.h264", {
+			stdio: ['pipe', null, null]
+		  });
+
+	omxProcess.once('exit', function (code, signal) {
+		 omxProcess = null;
+		 console.log("fin de la video");
+	});
+
+}
+
+
+

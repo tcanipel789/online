@@ -1,22 +1,22 @@
-app.controller('deviceCtrl', function($scope) {
+
+app.controller('deviceCtrl', function($scope, $http) {
 $scope.isVisible = false;
 $scope.status = '';
 $scope.name = '';
 $scope.tags = '';
 
-$scope.devices = [
-{id:'1', status:'offline', name:'i5-test',  tags: 'test'},
-{id:'2', status:'offline', name:'i5-test',  tags: 'test'},
-{id:'3', status:'offline', name:'i5-test',  tags: 'test'},
-{id:'4', status:'offline', name:'i5-test',  tags: 'test'},
-{id:'5', status:'offline', name:'i5-test',  tags: 'test'},
-{id:'6', status:'offline', name:'i5-test',  tags: 'test'},
-{id:'7', status:'offline', name:'i5-test',  tags: 'test'}
-];
-
 $scope.edit = true;
 $scope.error = false;
 $scope.incomplete = false;
+
+	
+$http.get('/players/devices').
+  success(function(data, status, headers, config) {
+    $scope.devices = data;
+  }).
+  error(function(data, status, headers, config) {
+   console.log("error when retrieving devices");
+  });
 
 $scope.editDevice = function(id) {
   $scope.isVisible = true;
