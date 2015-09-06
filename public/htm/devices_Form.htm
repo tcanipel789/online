@@ -9,41 +9,45 @@
 <div class="form-group">
   <label class="col-sm-2 control-label">Status:</label>
   <div class="col-sm-10">
-    <input type="text" ng-model="status" ng-disabled="!edit" placeholder="Status">
+    <input type="text" class="form-control" ng-model="status" ng-disabled="!edit" placeholder="Status">
   </div>
 </div>
 <div class="form-group">
   <label class="col-sm-2 control-label">Name:</label>
   <div class="col-sm-10">
-    <input type="text" ng-model="name" ng-disabled="!edit" placeholder="Name">
+    <input type="text" class="form-control" ng-model="name" ng-disabled="!edit" placeholder="Name">
   </div>
 </div>
 <div class="form-group">
   <label class="col-sm-2 control-label">Tags:</label>
   <div class="col-sm-10">
-    <input type="text" ng-model="tags" placeholder="Tags">
+    <input type="text" class="form-control" ng-model="tags" placeholder="Tags">
   </div>
 </div>
 <div class="form-group">
   <label class="col-sm-2 control-label">Temperature :</label>
   <div class="col-sm-10">
-    <input type="text" ng-model="temp" ng-disabled="!edit" placeholder="Temp">
+    <input type="text" class="form-control" ng-model="temp" ng-disabled="!edit" placeholder="Temp">
   </div>
 </div>
 <div class="form-group">
   <label class="col-sm-2 control-label">Ip local :</label>
   <div class="col-sm-10">
-    <input type="text" ng-model="localip" ng-disabled="!edit" placeholder="Ip local">
+    <input type="text" class="form-control" ng-model="localip" ng-disabled="!edit" placeholder="Ip local">
   </div>
 </div>
 </form>
 
-<hr>
 
-<button class="btn btn-success" ng-disabled="error || incomplete" ng-click="save()">
-  <span class="glyphicon glyphicon-save"></span> Save Changes
-</button>
-<button class="btn"  ng-click="cancel()">
-  Cancel
-</button> 
+<div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+		<button class="btn btn-success" ng-disabled="error || incomplete" ng-click="save()">
+		  <span class="glyphicon glyphicon-save"></span> Save Changes
+		</button>
+		<button class="btn btn-default"  ng-click="cancel()">
+		  Cancel
+		</button> 
+	</div>
 </div>
+</div>
+<br/><hr/>
