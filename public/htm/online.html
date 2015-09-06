@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=1" name="viewport" /> 
+<html ng-app="onlineApp">
+<link rel="stylesheet" href="../css/bootstrap.min.css">
+<link rel="stylesheet" href="../css/footer.css">
+<script src="../lib/angular.min.js"></script>
+<script src="../lib/ui-bootstrap-0.13.0.min.js"></script>
+
+
+<body ng-controller="mainCtrl">
+
+
+<nav class="navbar navbar-default" ng-include="'./htm/nav.htm'"></nav>
+
+<div class="container" ng-controller="deviceCtrl" ng-show="playerVisible">
+	<div ng-include="'./htm/devices_Form.htm'"></div>
+	<div ng-include="'./htm/devices_List.htm'"></div>
+</div>
+<div class="container" ng-controller="mediaCtrl" ng-show="mediaVisible">
+	<div ng-include="'./htm/medias_List.htm'"></div>
+</div>
+
+<div class="container" ng-show="programVisible">
+	<div ng-include="'./htm/devices_List.htm'"></div>
+</div>
+
+<div class="container" ng-controller="broadcastCtrl" ng-show="broadcastVisible">
+	<div ng-include="'./htm/broadcasts_List.htm'"></div>
+</div>
+
+<script src = "../js/onlineApp.js"></script>
+<script src="../js/mainCtrl.js"></script>
+<script src="../js/devicesCtrl.js"></script>
+<script src="../js/mediasCtrl.js"></script>
+<script src="../js/broadcastsCtrl.js"></script>
+
+<footer class="footer">
+  <div class="container">
+	<a href="whatsapp://send?text=BVLGARI Design Your Love : + https%3A%2F%2Fbulgari-dyl-cn.carlipa-online.com%2Fapp%2F%23%2Fhome%2F1440145077715">Whatsapp</a>
+	<a href="http://line.me/R/msg/text/?BVLGARI Design Your Love : + https%3A%2F%2Fbulgari-dyl-cn.carlipa-online.com%2Fapp%2F%23%2Fhome%2F1440145077715">Line</a>
+	<a href="http://service.weibo.com/share/share.php?url=https%3A%2F%2Fbulgari-dyl-cn.carlipa-online.com%2Fapp%2F%23%2Fhome%2F1440145077715&title=BVLGARI Design Your Love : ">Weibo</a>
+  </div>
+</footer>
+
+</body>
+</html>

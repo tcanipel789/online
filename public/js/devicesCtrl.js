@@ -10,7 +10,7 @@ $scope.error = false;
 $scope.incomplete = false;
 
 	
-$http.get('/players/devices').
+$http.get('/online/devices').
   success(function(data, status, headers, config) {
     $scope.devices = data;
   }).
@@ -18,6 +18,17 @@ $http.get('/players/devices').
    console.log("error when retrieving devices");
   });
 
+$scope.reload = function() {
+$http.get('/online/devices').
+  success(function(data, status, headers, config) {
+    $scope.devices = data;
+  }).
+  error(function(data, status, headers, config) {
+   console.log("error when retrieving devices");
+  });
+}
+  
+  
 $scope.editDevice = function(id) {
   $scope.isVisible = true;
   if (id == 'new') {
@@ -28,14 +39,15 @@ $scope.editDevice = function(id) {
     $scope.status = $scope.devices[id-1].status;
     $scope.name = $scope.devices[id-1].name;
 	$scope.tags = $scope.devices[id-1].tags;
+	$scope.temp = $scope.devices[id-1].temp;
   }
 };
 
-$scope.openForm = function(){
-	
+$scope.save = function() {
+ $scope.isVisible = false;
 };
 
-$scope.save = function() {
+$scope.cancel = function() {
  $scope.isVisible = false;
 };
 

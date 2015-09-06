@@ -1,0 +1,33 @@
+ <h3>Medias</h3>
+
+ <button class="btn btn-success">
+       Add media &nbsp;<span class="glyphicon glyphicon-plus-sign"/>
+</button>
+ 
+<table class="table table-striped">
+  <thead><tr>
+    <th>Name</th>
+    <th>Type</th>
+    <th>Tags</th>
+	<th>Validity</th>
+	<th>Action</th>
+  </tr></thead>
+  <tbody><tr ng-repeat="media in medias">
+    <td>
+			{{ media.name }}
+	</td>
+    <td>
+			{{ media.type }}
+    </td>
+	<td>{{ media.tags }}</td>
+	<td>{{ media.validity }}</td>
+	<td>
+      <button class="btn">
+        <span class="glyphicon glyphicon-pencil"></span>
+      </button>
+	  <button class="btn" ng-disabled="true">
+        <span class="glyphicon glyphicon-user"></span>
+      </button>
+    </td>
+  </tr></tbody>
+</table> 
