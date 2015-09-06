@@ -40,6 +40,7 @@ $scope.editDevice = function(id) {
     $scope.name = $scope.devices[id-1].name;
 	$scope.tags = $scope.devices[id-1].tags;
 	$scope.temp = $scope.devices[id-1].temp;
+	$scope.localip = $scope.devices[id-1].localip;
   }
 };
 
