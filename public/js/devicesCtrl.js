@@ -9,23 +9,18 @@ $scope.edit = true;
 $scope.error = false;
 $scope.incomplete = false;
 
-	
-$http.get('/online/devices').
-  success(function(data, status, headers, config) {
-    $scope.devices = data;
-  }).
-  error(function(data, status, headers, config) {
-   console.log("error when retrieving devices");
-  });
 
 $scope.reload = function() {
-$http.get('/online/devices').
-  success(function(data, status, headers, config) {
-    $scope.devices = data;
-  }).
-  error(function(data, status, headers, config) {
-   console.log("error when retrieving devices");
-  });
+	if ($scope.playerVisible == true){
+		
+	$http.get('/online/devices').
+	  success(function(data, status, headers, config) {
+		$scope.devices = data;
+	  }).
+	  error(function(data, status, headers, config) {
+	   console.log("error when retrieving devices");
+	  });
+  }
 }
   
   
@@ -52,6 +47,7 @@ $scope.cancel = function() {
  $scope.isVisible = false;
 };
 
+$scope.$watch('playerVisible',function(){$scope.reload();});
 $scope.$watch('status',function() {$scope.test();});
 $scope.$watch('name', function() {$scope.test();});
 $scope.$watch('tags', function() {$scope.test();});

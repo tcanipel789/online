@@ -5,14 +5,21 @@ $scope.edit = true;
 $scope.error = false;
 $scope.incomplete = false;
 
-	
-$http.get('/online/medias').
-  success(function(data, status, headers, config) {
-    $scope.medias = data;
-  }).
-  error(function(data, status, headers, config) {
-   console.log("error when retrieving medias");
-  });
+  
+ $scope.reload = function() {
+	if ($scope.mediaVisible == true){
+	$http.get('/online/medias').
+	success(function(data, status, headers, config) {
+		$scope.medias = data;
+	}).
+	error(function(data, status, headers, config) {
+		console.log("error when retrieving medias");
+	});
+  }
+}
+  
+$scope.$watch('mediaVisible',function() {$scope.reload();}); 
+
 /*
 $scope.editmedia = function(id) {
   $scope.isVisible = true;

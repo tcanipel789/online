@@ -5,22 +5,19 @@ $scope.edit = true;
 $scope.error = false;
 $scope.incomplete = false;
 
-$http = $http;
-$http.get('/online/broadcasts').success(function(data, status, headers, config) {
-		$scope.broadcasts = data;
-	  }).
-	  error(function(data, status, headers, config) {
-	   console.log("error when retrieving broadcasts");
-	  });
-  
+
 $scope.reload = function() {
-	$http.get('/online/broadcasts').success(function(data, status, headers, config) {
-		$scope.broadcasts = data;
-	  }).
-	  error(function(data, status, headers, config) {
-	   console.log("error when retrieving broadcasts");
-	  });
+	if ($scope.broadcastVisible == true){
+		$http.get('/online/broadcasts').success(function(data, status, headers, config) {
+			$scope.broadcasts = data;
+		  }).
+		  error(function(data, status, headers, config) {
+		   console.log("error when retrieving broadcasts");
+		  });
+	}
 }
+
+$scope.$watch('broadcastVisible',function() {$scope.reload();});
 
 /*
 $scope.editBroadcast = function(id) {
