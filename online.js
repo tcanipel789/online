@@ -6,6 +6,7 @@ var app = express();
 var mock = 0;
 var devices = [];
 
+app.set('port', (process.env.PORT || 5000));
 app.use(bodyParser.json()); // for parsing application/json
 app.use(express.static('public'));
 
@@ -124,12 +125,11 @@ app.post('/online/devices/:ID', function (req, res) {
 	res.json({status:'200'});
   
  });
+ 
 
-var server = app.listen(8080, function () {
 
-  var host = server.address().address;
-  var port = server.address().port;
+var server = app.listen(app.get('port'), function () {
 
-  console.log('Online app listening at http://%s:%s', host, port);
+   console.log('Node app is running on port', app.get('port'));
 
 });;
