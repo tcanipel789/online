@@ -1,13 +1,13 @@
-var http = require("http");
+var http = require("https");
 var querystring = require('querystring');
 var fs = require("fs");
 var path = require('path');
 var exec = require('child_process').exec;
 
 
-var server = "http://172.168.0.59:8080";  // SERVER URL
-var serverPort = '8080';
-var serverIp   = '172.168.0.59';
+var server = "https://calm-hollows-9500.herokuapp.com";  // SERVER URL
+var serverPortSSL = '443';
+var serverIp   = 'calm-hollows-9500.herokuapp.com';
 var download = true;
 var playlistsPath = "/playlist/"; // "./playlist/" // PLAYLIST FOLDER ON DEVICE
 var mediasPath = "/medias/";    // "/medias/"   // MEDIAS FOLDER ON DEVICE
@@ -69,6 +69,7 @@ var downloadManager = function (){
 		fs.readdir(playlistsPath, function(err,files){
 			if (err){
 				console.log("=> Error the playlistPath cannot be reach "+ err);
+				return;
 			}
 			files = files.filter(function(file) { if ((path.extname(file) === ".pl")&&(path.basename(file,'.pl') != "main")) return file});
 			if (files != undefined){
@@ -170,6 +171,7 @@ function getMac(){
 		_mac = stringTemp;
 		console.log('=>Mac Adress information '+ _mac);
 	}else{
+		console.log('=> error: mac adress only works on linux system');
 		_mac = 'UNDE';
 	}
 	return _mac;
@@ -185,7 +187,7 @@ function httpPost(codestring, path) {
 	// An object of options to indicate where to post to
 	var post_options = {
 	  host: serverIp,
-	  port: serverPort,
+	  port: serverPortSSL,
 	  path: path,
 	  method: 'POST',
 	  headers: {
