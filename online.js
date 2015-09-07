@@ -107,6 +107,7 @@ app.get("/online/broadcasts/:PLAYER/:ID",function(req,res){
 	res.send(broadcastObj);
 });
 
+//devices.splice(0, 1, {id:0, status: 'online',lastseen: new Date().toISOString().replace('T', ' ').substr(0, 19)}); 
 
 app.post('/online/devices/:ID', function (req, res) {
 	var data = req.body;
@@ -119,7 +120,7 @@ app.post('/online/devices/:ID', function (req, res) {
 	//devices.push({id: devices.length, status: 'online', name: data.string.id,  tags: data.string.tags});
 	//Update current state of the player
 	//console.log(devices[0]);
-	devices.splice(0, 1, {id:devices.length, status: 'online', name: data.string.id, localip: data.string.localip ,  temp: data.string.temp ,  tags: data.string.tags}); 
+	devices.splice(0, 1, {id:devices.length, status: 'online',lastseen: Date().toISOString().replace('T', ' ').substr(0, 19), name: data.string.id, localip: data.string.localip ,  temp: data.string.temp ,  tags: data.string.tags}); 
 	
 	res.status(200);
 	res.json({status:'200'});
