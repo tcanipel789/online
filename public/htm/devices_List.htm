@@ -1,28 +1,27 @@
- <h3>Devices 
- <button class="btn" disabled="disabled">{{devices.length}}</button>
- <button class="btn" ng-click="reload()"><span class="glyphicon glyphicon-refresh"></span></button>
- </h3>
+<div ng-show="listVisible">
+<h3 ng-click="reload()"><a>Devices</a> <span class="label label-default" >{{devices.length}}</span></h3>
 
 <table class="table table-striped">
-  <thead><tr>
-    <th>Status</th>
-    <th>Name</th>
-    <th>Tags</th>
-	<th>Actions</th>
-  </tr></thead>
+  <thead>
+	<tr>
+		<th>Status</th>
+		<th>Name</th>
+		<th>Created</th>
+	</tr>
+  </thead>
   <tbody><tr ng-repeat="device in devices">
-    <td>
+    <td  class="col-md-2">
 		<button class="btn btn-success" ng-click="editDevice(device.id)">
 			{{ device.status }}
 		</button>
 	</td>
-    <td>
+    <td  class="col-md-2">
 		<button class="btn">
 			{{ device.name }}
 		</button>
     </td>
-	<td>{{ device.tags }}</td>
-	<td>
+	<td class="col-md-2">{{ device.created }}</td>
+	<td  class="col-md-6 text-right">
       <button class="btn" ng-click="editDevice(device.id)">
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
@@ -32,3 +31,4 @@
     </td>
   </tr></tbody>
 </table> 
+</div>

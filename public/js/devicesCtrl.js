@@ -4,11 +4,12 @@ $scope.isVisible = false;
 $scope.status = '';
 $scope.name = '';
 $scope.tags = '';
-
+$scope.lastseen = '';
+$scope.created = '';
 $scope.edit = true;
 $scope.error = false;
 $scope.incomplete = false;
-
+$scope.listVisible = true;
 
 $scope.reload = function() {
 	if ($scope.playerVisible == true){
@@ -26,25 +27,30 @@ $scope.reload = function() {
   
 $scope.editDevice = function(id) {
   $scope.isVisible = true;
+  $scope.listVisible = false;
   if (id == 'new') {
     $scope.edit = true;
     $scope.incomplete = true;
     } else {
-    $scope.edit = false;
-    $scope.status = $scope.devices[id-1].status;
-    $scope.name = $scope.devices[id-1].name;
-	$scope.tags = $scope.devices[id-1].tags;
-	$scope.temp = $scope.devices[id-1].temp;
-	$scope.localip = $scope.devices[id-1].localip;
+		$scope.edit = false;
+		$scope.status = $scope.devices[id-1].status;
+		$scope.name = $scope.devices[id-1].name;
+		$scope.tags = $scope.devices[id-1].tags;
+		$scope.temp = $scope.devices[id-1].temp;
+		$scope.lastseen = $scope.devices[id-1].lastseen;
+		$scope.created = $scope.devices[id-1].created;
+		$scope.localip = $scope.devices[id-1].localip;
   }
 };
 
 $scope.save = function() {
  $scope.isVisible = false;
+ $scope.listVisible = true;
 };
 
 $scope.cancel = function() {
  $scope.isVisible = false;
+ $scope.listVisible = true;
 };
 
 $scope.$watch('playerVisible',function(){$scope.reload();});
