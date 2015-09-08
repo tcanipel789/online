@@ -1,6 +1,10 @@
 <div ng-show="isVisible">
 
-
+<div ng-repeat="c in columns" class="column"
+  drag="c" dragStyle="columnDrag"
+  drop="c" dropStyle="columnDrop">
+  {{c.title}}
+</div>
 <hr>
 
 <h3 ng-hide="edit">Device: {{name}}</h3>
