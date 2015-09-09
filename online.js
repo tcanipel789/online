@@ -25,7 +25,7 @@ app.get("/online/devices",function(req,res){
 
     // Get a Postgres client from the connection pool
     pg.connect(connectionString, function(err, client, done) {
-        // SQL Query > Select Data
+       /* // SQL Query > Select Data
         var query = client.query("SELECT * FROM devices ORDER BY id ASC;");
         // Stream results back one row at a time
         query.on('row', function(row) {
@@ -35,14 +35,25 @@ app.get("/online/devices",function(req,res){
         // After all data is returned, close connection and return results
         query.on('end', function() {
             client.end();
-            return res.json(results);
+			return res.json(results);
         });
 
         // Handle Errors
         if(err) {
           console.log("> Error in retrieving devices : "+err);
-        }
+        }*/
+		client.query("SELECT * FROM devices ORDER BY id ASC;", function(err, result) {
+			//call `done()` to release the client back to the pool
+			done();
+			if(err) {
+			  return console.error('> Error running update', err);
+			}
+			
+			return res.json(result.rows);
+		});
+			
     });
+	
 });
 
 app.get("/online/medias",function(req,res){

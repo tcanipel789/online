@@ -13,49 +13,7 @@ $scope.incomplete = false;
 $scope.listVisible = true;
 
 $scope.stylereload = "glyphicon glyphicon-refresh";
-
-
-
- // array for dropped items
-    $scope.dropped = [];
  
-    // array of items for dragging
-    $scope.items = [
-        {id: 1, name: "Microwave"}, 
-        {id: 2, name: "Dishwasher" },
-        {id: 3, name: "Phone" },
-        {id: 4, name: "Punching Bag" }
-    ];
- 
-    $scope.moveToBox = function(id) {
- 
-        for (var index = 0; index < $scope.items.length; index++) {
- 
-            var item = $scope.items[index];
-                 
-            if (item.id == id) {
-                // add to dropped array
-                $scope.dropped.push(item);
- 
-                // remove from items array
-                $scope.items.splice(index, 1);
-            }
-        }
- 
-        $scope.$apply();
-    };
- 
-    $scope.showItmesLeft = function () {
-        alert($scope.items.length + " items left.");
-    };
-     
-    $scope.showItmesDropped = function () {
-        alert($scope.dropped.length + " items in drop-box.");
-    };
-
-
-
-
 $scope.reload = function() {
 
 	if ($scope.playerVisible == true){
@@ -81,14 +39,25 @@ $scope.editDevice = function(id) {
     $scope.edit = true;
     $scope.incomplete = true;
     } else {
+		
+		var index = 0;
+		var numDevices;
+		for(var i = 0, numDevices = $scope.devices.length; i < numDevices; i++)
+		{
+		  if($scope.devices[i].id == id)
+		  {
+			index = i;
+		  }
+		}
+		
 		$scope.edit = false;
-		$scope.status = $scope.devices[id-1].status;
-		$scope.name = $scope.devices[id-1].name;
-		$scope.tags = $scope.devices[id-1].tags;
-		$scope.temp = $scope.devices[id-1].temp;
-		$scope.lastseen = $scope.devices[id-1].lastseen;
-		$scope.created = $scope.devices[id-1].created;
-		$scope.localip = $scope.devices[id-1].localip;
+		$scope.status = 'online';
+		$scope.name = $scope.devices[index].name;
+		$scope.tags = $scope.devices[index].tags;
+		$scope.temp = $scope.devices[index].temperature;
+		$scope.lastseen = $scope.devices[index].lastseen;
+		$scope.created = $scope.devices[index].created;
+		$scope.localip = $scope.devices[index].localip;
   }
 };
 
