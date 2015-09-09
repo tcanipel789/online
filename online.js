@@ -1,6 +1,7 @@
-var express = require("express");
+var express = require('express');
 var bodyParser = require('body-parser');
-var fs = require ("fs");
+var pg = require ('pg');
+var fs = require ('fs');
 var app = express();
 
 var mock = 0;
@@ -14,25 +15,41 @@ app.get("/online",function(req,res){
 	res.sendfile("./public/htm/online.html");
 });
 
+var connectionString = process.env.DATABASE_URL || 'postgres://enlfyxbinfnbmc:D-niRw_av_sJGL2f_dWORYsjlu@ec2-54-235-162-144.compute-1.amazonaws.com:5432/d44i2hb6d0pm78?ssl=true';
 
+	
 app.get("/online/devices",function(req,res){
-	// TODO stock devices
 	console.log("GET > retrieving devices");
-	res.send(devices);
+
+    var results = [];
+
+    // Get a Postgres client from the connection pool
+    pg.connect(connectionString, function(err, client, done) {
+        // SQL Query > Select Data
+        var query = client.query("SELECT * FROM devices ORDER BY id ASC;");
+        // Stream results back one row at a time
+        query.on('row', function(row) {
+            results.push(row);
+        });
+
+        // After all data is returned, close connection and return results
+        query.on('end', function() {
+            client.end();
+            return res.json(results);
+        });
+
+        // Handle Errors
+        if(err) {
+          console.log("> Error in retrieving devices : "+err);
+        }
+    });
 });
 
 app.get("/online/medias",function(req,res){
 	//TODO media storage
 	console.log("GET > retrieving medias");
 	var medias = [
-		{id:'1', name:'storefront-solaris', type:'video',  tags: 'test', validity: 'always'},
-		{id:'2', name:'storefront-solaris', type:'video',  tags: 'test', validity: 'always'},
-		{id:'3', name:'storefront-solaris', type:'video',  tags: 'test', validity: 'always'},
-		{id:'4', name:'storefront-solaris', type:'video',  tags: 'test', validity: 'always'},
-		{id:'5', name:'storefront-solaris', type:'video',  tags: 'test', validity: 'always'},
-		{id:'6', name:'storefront-solaris', type:'video',  tags: 'test', validity: 'always'},
-		{id:'7', name:'storefront-solaris', type:'video',  tags: 'test', validity: 'always'},
-		{id:'8', name:'storefront-solaris', type:'video',  tags: 'test', validity: 'always'}
+		{id:'1', name:'storefront-solaris', type:'video',  tags: 'test', validity: 'always'}
 		];
 	res.send(medias);
 });
@@ -41,46 +58,7 @@ app.get("/online/broadcasts",function(req,res){
 	//TODO broadcast storage
 	console.log("GET > retrieving broadcasts");
 	var medias = [
-		{id:'1', status:'100', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'2', status:'100', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'3', status:'100', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'4', status:'20', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'5', status:'100', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'6', status:'30', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'7', status:'50', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'8', status:'100', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'1', status:'100', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'2', status:'100', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'3', status:'100', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'4', status:'20', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'5', status:'100', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'6', status:'30', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'7', status:'50', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'8', status:'100', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'1', status:'100', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'2', status:'100', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'3', status:'100', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'4', status:'20', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'5', status:'100', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'6', status:'30', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'7', status:'50', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'8', status:'100', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'1', status:'100', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'2', status:'100', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'3', status:'100', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'4', status:'20', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'5', status:'100', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'6', status:'30', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'7', status:'50', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'8', status:'100', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'1', status:'100', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'2', status:'100', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'3', status:'100', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'4', status:'20', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'5', status:'100', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'6', status:'30', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'7', status:'50', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'},
-		{id:'8', status:'100', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'}
+		{id:'1', status:'100', name:'training room',  sent: '08/24/2015 10:37 AM', created: '08/24/2015 10:37 AM'}
 		];
 	res.send(medias);
 });
@@ -107,26 +85,42 @@ app.get("/online/broadcasts/:PLAYER/:ID",function(req,res){
 	res.send(broadcastObj);
 });
 
-devices.splice(0, 1, {id:1, status: 'online',lastseen: new Date().toISOString().replace('T', ' ').substr(0, 19),name: 'toto', localip: 'tset' }); 
 
-app.post('/online/devices/:ID', function (req, res) {
+app.post('/online/devices/:ID', function(req, res) {
 	var data = req.body;
 	console.log('POST> the player : '+req.params.ID+ ' is sending status information | ' + data.string.localip + ' | '+data.string.temp+ ' | '+data.string.id);
-
-	// TODO
-	// UPDATE THE DEVICES INFORMATION AND LIST
-	//var idx = devices.indexOf(data.string.id);
-	//New player registered
-	//devices.push({id: devices.length, status: 'online', name: data.string.id,  tags: data.string.tags});
-	//Update current state of the player
-	//console.log(devices[0]);
-	devices.splice(0, 1, {id: 1, status: 'online',lastseen: new Date().toISOString().replace('T', ' ').substr(0, 19), name: data.string.id, localip: data.string.localip ,  temp: data.string.temp ,  tags: data.string.tags}); 
 	
-	res.status(200);
-	res.json({status:'200'});
-  
- });
- 
+	var temp = null || data.string.temp;
+	var localip = null || data.string.localip;
+	var name = null || data.string.id;
+	var date = new Date().toISOString().replace('T', ' ').substr(0, 19);
+	var results = [];
+	
+    // Get a Postgres client from the connection pool
+    pg.connect(connectionString, function(err, client, done) {
+		  client.query("UPDATE devices SET temperature=($1), localip=($2), lastseen =($3) WHERE name=($4)", [temp,localip,date, name], function(err, result) {
+			//call `done()` to release the client back to the pool
+			done();
+			if(err) {
+			  return console.error('> Error running update', err);
+			}
+			
+			if (result.rowCount ==  0){
+				  console.log("> Insert a new device");
+				  client.query("INSERT INTO devices(name,localip,created) values($1,$2,$3)", [name,localip,date], function(err, result) {
+					//call `done()` to release the client back to the pool
+					done();
+					if(err) {
+					  return console.error('> Error running insert', err);
+					}
+					//output: 1
+				  });
+				  return ;
+			}
+			//output: 1
+		  });
+    });
+});
 
 
 var server = app.listen(app.get('port'), function () {

@@ -206,7 +206,7 @@ function httpPost(codestring, path) {
 	post_req.end();
 }
 
-var interval = setInterval(deviceInformation, 10000);
+var interval = setInterval(deviceInformation, 30000);
 var interval = setInterval(downloadManager, 10000);
 var interval = setInterval(updatePlaylist, 10000);
 
