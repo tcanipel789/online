@@ -25,23 +25,6 @@ app.get("/online/devices",function(req,res){
 
     // Get a Postgres client from the connection pool
     pg.connect(connectionString, function(err, client, done) {
-       /* // SQL Query > Select Data
-        var query = client.query("SELECT * FROM devices ORDER BY id ASC;");
-        // Stream results back one row at a time
-        query.on('row', function(row) {
-            results.push(row);
-        });
-
-        // After all data is returned, close connection and return results
-        query.on('end', function() {
-            client.end();
-			return res.json(results);
-        });
-
-        // Handle Errors
-        if(err) {
-          console.log("> Error in retrieving devices : "+err);
-        }*/
 		client.query("SELECT * FROM devices ORDER BY id ASC;", function(err, result) {
 			//call `done()` to release the client back to the pool
 			done();
@@ -49,6 +32,7 @@ app.get("/online/devices",function(req,res){
 			  return console.error('> Error running update', err);
 			}
 			
+			devices = results;
 			return res.json(result.rows);
 		});
 			
@@ -99,23 +83,28 @@ app.get("/online/broadcasts/:PLAYER/:ID",function(req,res){
 
 app.post('/online/devices/:ID', function(req, res) {
 	var data = req.body;
-	console.log('POST> the player : '+req.params.ID+ ' is sending status information | ' + data.string.localip + ' | '+data.string.temp+ ' | '+data.string.id);
 	
-	var temp = null || data.string.temp;
-	var localip = null || data.string.localip;
-	var name = null || data.string.id;
-	var date = new Date().toISOString().replace('T', ' ').substr(0, 19);
+	var temp = data.string.temp || null;
+	var localip = data.string.localip || null;
+	var name = data.string.name || null;
+	var description = data.string.description || null;
+	var tags = parseInt(data.string.tags) || null;
+	var owner = parseInt(data.string.owner) || null;
+	var date = new Date().toISOString();
 	var results = [];
+	
+	console.log('POST> the player : '+req.params.ID+ ' is sending status information | ' + localip + ' | '+ temp + ' | '+ name);
+	
 	
     // Get a Postgres client from the connection pool
     pg.connect(connectionString, function(err, client, done) {
-		  client.query("UPDATE devices SET temperature=($1), localip=($2), lastseen =($3) WHERE name=($4)", [temp,localip,date, name], function(err, result) {
+		  client.query("UPDATE devices SET temperature=($1), localip=($2), lastseen =($3), description = ($4), tags = ($5), owner = ($6) WHERE name=($7)", [temp,localip,date,description,tags,owner,name], function(err, result) {
 			//call `done()` to release the client back to the pool
 			done();
 			if(err) {
 			  return console.error('> Error running update', err);
 			}
-			
+			res.sendStatus(200);
 			if (result.rowCount ==  0){
 				  console.log("> Insert a new device");
 				  client.query("INSERT INTO devices(name,localip,created) values($1,$2,$3)", [name,localip,date], function(err, result) {

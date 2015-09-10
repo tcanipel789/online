@@ -21,16 +21,16 @@
 		</button>
 	</td>
     <td  class="col-md-2">
-		<button class="btn">
+		<button class="btn disabled" >
 			{{ device.name }}
 		</button>
     </td>
-	<td class="col-md-2">{{ device.created }}</td>
+	<td class="col-md-2"><button class="btn disabled" >{{ device.created }}</button></td>
 	<td  class="col-md-6 text-right">
       <button class="btn" ng-click="editDevice(device.id)">
         <span class="glyphicon glyphicon-pencil"></span>
       </button>
-	  <button class="btn" >
+	  <button class="btn disabled" >
         <span class="glyphicon glyphicon-user"></span>
       </button>
     </td>
