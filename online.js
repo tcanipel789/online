@@ -100,7 +100,7 @@ app.post('/online/devices/:ID', function(req, res) {
     // Get a Postgres client from the connection pool
     pg.connect(connectionString, function(err, client, done) {
 		if (client != null){
-		  client.query("UPDATE devices SET temperature=coalesce(temperature,($1)), localip=coalesce(localip,($2)), lastseen =coalesce(localip,($3)), description = coalesce(description,($4)), tags = coalesce(tags,($5)), owner = coalesce(owner,($6)) WHERE name=($7)", [temp,localip,date,description,tags,owner,name], function(err, result) {
+		  client.query("UPDATE devices SET temperature=coalesce(temperature,($1)), localip=coalesce(localip,($2)), lastseen =coalesce(lastseen,($3)), description = coalesce(description,($4)), tags = coalesce(tags,($5)), owner = coalesce(owner,($6)) WHERE name=($7)", [temp,localip,date,description,tags,owner,name], function(err, result) {
 			//call `done()` to release the client back to the pool
 			done();
 			if(err) {
