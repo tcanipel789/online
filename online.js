@@ -25,6 +25,7 @@ app.get("/online/devices",function(req,res){
 
     // Get a Postgres client from the connection pool
     pg.connect(connectionString, function(err, client, done) {
+		if (client != null){
 		client.query("SELECT * FROM devices ORDER BY id ASC;", function(err, result) {
 			//call `done()` to release the client back to the pool
 			done();
@@ -36,7 +37,7 @@ app.get("/online/devices",function(req,res){
 			return res.json(result.rows);
 		});
 			
-    });
+    }});
 	
 });
 
@@ -98,7 +99,8 @@ app.post('/online/devices/:ID', function(req, res) {
 	
     // Get a Postgres client from the connection pool
     pg.connect(connectionString, function(err, client, done) {
-		  client.query("UPDATE devices SET temperature=($1), localip=($2), lastseen =($3), description = ($4), tags = ($5), owner = ($6) WHERE name=($7)", [temp,localip,date,description,tags,owner,name], function(err, result) {
+		if (client != null){
+		  client.query("UPDATE devices SET temperature=coalesce(temperature,($1)), localip=coalesce(localip,($2)), lastseen =coalesce(localip,($3)), description = coalesce(description,($4)), tags = coalesce(tags,($5)), owner = coalesce(owner,($6)) WHERE name=($7)", [temp,localip,date,description,tags,owner,name], function(err, result) {
 			//call `done()` to release the client back to the pool
 			done();
 			if(err) {
@@ -119,7 +121,7 @@ app.post('/online/devices/:ID', function(req, res) {
 			}
 			//output: 1
 		  });
-    });
+    }});
 });
 
 

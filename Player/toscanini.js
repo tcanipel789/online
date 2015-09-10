@@ -125,7 +125,7 @@ var removeMedia = function(name){
 */
 var deviceInformation = function (){
 	
-  var deviceData =  {id: _mac, temp: getTemperature(), localip: getIPAddress()};
+  var deviceData =  {name: _mac, temp: getTemperature(), localip: getIPAddress()};
   var jsonDevice = JSON.stringify(deviceData);
   httpPost(jsonDevice,'/online/devices/'+_mac);
 }
@@ -206,7 +206,7 @@ function httpPost(codestring, path) {
 	post_req.end();
 }
 
-var interval = setInterval(deviceInformation, 30000);
+var interval = setInterval(deviceInformation, 60000);
 var interval = setInterval(downloadManager, 10000);
 var interval = setInterval(updatePlaylist, 10000);
 
