@@ -41,6 +41,44 @@ app.get("/online/devices",function(req,res){
 	
 });
 
+app.get("/online/devices/:ID/tags",function(req,res){
+	console.log('GET> the player : '+req.params.ID+ 'is requesting tags');
+	
+	var results = [];
+
+	pg.connect(connectionString, function(err, client, done) {
+		if (client != null){
+		client.query("SELECT id_tag,name,selected FROM device_tag INNER JOIN tags ON device_tag.id = tags.id WHERE id_device=$1;",[req.params.ID], function(err, result) {
+			//call `done()` to release the client back to the pool
+			done();
+			if(err) {
+			  return console.error('> Error running update', err);
+			}
+		
+			return res.json(result.rows);
+		});
+			
+    }});
+});
+
+app.get("/online/tags",function(req,res){
+	console.log('GET> retrieving the tags');
+	var results = [];
+
+	pg.connect(connectionString, function(err, client, done) {
+		if (client != null){
+		client.query("SELECT * FROM tags;", function(err, result) {
+			//call `done()` to release the client back to the pool
+			done();
+			if(err) {
+			  return console.error('> Error running update', err);
+			}
+			return res.json(result.rows);
+		});
+			
+    }});
+});
+
 app.get("/online/medias",function(req,res){
 	//TODO media storage
 	console.log("GET > retrieving medias");
@@ -92,7 +130,8 @@ app.post('/online/devices/:ID', function(req, res) {
 	var tags = parseInt(data.string.tags) || null;
 	var owner = parseInt(data.string.owner) || null;
 	var date = new Date().toISOString();
-	var results = [];
+	//var tags = data.string.tags || null;
+	
 	
 	console.log('POST> the player : '+req.params.ID+ ' is sending status information | ' + localip + ' | '+ temp + ' | '+ name);
 	
@@ -100,7 +139,7 @@ app.post('/online/devices/:ID', function(req, res) {
     // Get a Postgres client from the connection pool
     pg.connect(connectionString, function(err, client, done) {
 		if (client != null){
-		  client.query("UPDATE devices SET temperature=coalesce(($1),temperature), localip=coalesce(($2),localip), lastseen =coalesce(($3),lastseen), description = coalesce(($4),description), tags = coalesce(($5),tags), owner = coalesce(($6),owner) WHERE name=($7)", [temp,localip,date,description,tags,owner,name], function(err, result) {
+		    client.query("UPDATE devices SET temperature=coalesce(($1),temperature), localip=coalesce(($2),localip), lastseen =coalesce(($3),lastseen), description = coalesce(($4),description), tags = coalesce(($5),tags), owner = coalesce(($6),owner) WHERE name=($7)", [temp,localip,date,description,tags,owner,name], function(err, result) {
 			//call `done()` to release the client back to the pool
 			done();
 			if(err) {

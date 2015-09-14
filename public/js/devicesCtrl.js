@@ -1,11 +1,15 @@
 
 app.controller('deviceCtrl', function($scope, $http) {
-	
+
+
+
 $scope.isVisible = false;
+$scope.tagVisible = false;
 
 $scope.status = '';
 $scope.name = '';
 $scope.tags = '';
+$scope.temptags = '';
 $scope.lastseen = '';
 $scope.created = '';
 $scope.description = '';
@@ -19,6 +23,23 @@ $scope.listVisible = true;
 $scope.styleSave="glyphicon glyphicon-save";
 $scope.stylereload = "glyphicon glyphicon-refresh";
  
+ 
+$scope.showTag = function(){
+	if ($scope.tagVisible){
+		$scope.tagVisible = false;
+	}else{
+		$scope.tagVisible = true;
+	}
+} 
+
+$scope.toggleSelection = function(tag){
+	if(tag.selected != null){
+		tag.selected = !tag.selected;
+	}else{
+		tag.selected = true;
+	}
+}
+
 $scope.reload = function() {
 
 	if ($scope.playerVisible == true){
@@ -28,6 +49,7 @@ $scope.reload = function() {
 	  success(function(data, status, headers, config) {
 		$scope.devices = data;
 		$scope.stylereload = "glyphicon glyphicon-refresh";
+		$scope.getTags();
 	  }).
 	  error(function(data, status, headers, config) {
 	   console.log("error when retrieving devices");
@@ -36,7 +58,37 @@ $scope.reload = function() {
   }
 }
   
-  
+
+$scope.getDevicesTags = function() {
+  if ($scope.playerVisible == true ){
+	$http.get('/online/devices/'+$scope.id+'/tags').
+	  success(function(data, status, headers, config) {
+		$scope.tags = data;
+		// Analyse if there is a difference in the count of available tags and tags from the device (2 different information)
+		if ($scope.temptags.length != 0){// check if any issue in retrieving the general tags
+			
+		}
+	  }).
+	  error(function(data, status, headers, config) {
+	   $scope.tagerror = 'error when retrieving selected tags';
+	   console.log("error when retrieving selected tags");
+	  });
+  }
+};
+
+$scope.getTags = function() {
+  if ($scope.playerVisible == true ){
+	$http.get('/online/tags').
+	  success(function(data, status, headers, config) {
+		$scope.temptags = data;
+	  }).
+	  error(function(data, status, headers, config) {
+	   console.log("error when retrieving tags");
+	  });
+  }
+};
+
+
 $scope.editDevice = function(id) {
 	$scope.isVisible = true;
 	$scope.listVisible = false;
@@ -54,14 +106,14 @@ $scope.editDevice = function(id) {
 	$scope.edit = false;
 	$scope.status = 'online';
 	$scope.name = $scope.devices[index].name;
-	$scope.tags = $scope.devices[index].tags;
 	$scope.temperature = $scope.devices[index].temperature;
 	$scope.lastseen = $scope.devices[index].lastseen;
 	$scope.created = $scope.devices[index].created;
 	$scope.localip = $scope.devices[index].localip;
 	$scope.description =  $scope.devices[index].description;
-	$scope.owner =  $scope.devices[index].owner;
-
+	$scope.id = id;
+	$scope.getDevicesTags();
+	
 };
 
 
