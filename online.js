@@ -42,7 +42,7 @@ app.get("/online/devices",function(req,res){
 });
 
 app.get("/online/devices/:ID/tags",function(req,res){
-	console.log('GET> the player : '+ req.params.ID + 'is requesting tags');
+	console.log('GET> the player : '+ req.params.ID + ' is requesting tags');
 	
 	var results = [];
 
@@ -142,14 +142,16 @@ app.post('/online/devices/:ID', function(req, res) {
 		    client.query("UPDATE devices SET temperature=coalesce(($1),temperature), localip=coalesce(($2),localip), lastseen =coalesce(($3),lastseen), description = coalesce(($4),description), owner = coalesce(($5),owner) WHERE name=($6)", [temp,localip,date,description,owner,name], function(err, result) {
 			// INSERT ALL DEPENDANCIES TO TAGS
 			//TO DO
-			for (var i = 0; i < tags.length ; i++){
-				console.log("UPDATING : " + tags[i].selected + " "+tags[i].id_tag);
-				client.query("UPDATE device_tag SET selected=($1) WHERE (id_device=($2) AND id_tag=($3))", [tags[i].selected,id,tags[i].id_tag], function(err, result) {
-				done();
-				if(err) {
-				  return console.error('> Error running update', err);
+			if (tags != null){
+				for (var i = 0; i < tags.length ; i++){
+					console.log("UPDATING : " + tags[i].selected + " "+tags[i].id_tag);
+					client.query("UPDATE device_tag SET selected=($1) WHERE (id_device=($2) AND id_tag=($3))", [tags[i].selected,id,tags[i].id_tag], function(err, result) {
+					done();
+					if(err) {
+					  return console.error('> Error running update', err);
+					}
+				  });
 				}
-			  });
 			}
 			//call `done()` to release the client back to the pool
 			done();
