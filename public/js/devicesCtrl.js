@@ -49,7 +49,6 @@ $scope.reload = function() {
 	  success(function(data, status, headers, config) {
 		$scope.devices = data;
 		$scope.stylereload = "glyphicon glyphicon-refresh";
-		$scope.getTags();
 	  }).
 	  error(function(data, status, headers, config) {
 	   console.log("error when retrieving devices");
@@ -64,10 +63,6 @@ $scope.getDevicesTags = function() {
 	$http.get('/online/devices/'+$scope.id+'/tags').
 	  success(function(data, status, headers, config) {
 		$scope.tags = data;
-		// Analyse if there is a difference in the count of available tags and tags from the device (2 different information)
-		if ($scope.temptags.length != 0){// check if any issue in retrieving the general tags
-			
-		}
 	  }).
 	  error(function(data, status, headers, config) {
 	   $scope.tagerror = 'error when retrieving selected tags';
@@ -75,7 +70,7 @@ $scope.getDevicesTags = function() {
 	  });
   }
 };
-
+/*
 $scope.getTags = function() {
   if ($scope.playerVisible == true ){
 	$http.get('/online/tags').
@@ -87,6 +82,7 @@ $scope.getTags = function() {
 	  });
   }
 };
+*/
 
 
 $scope.editDevice = function(id) {
@@ -121,7 +117,7 @@ $scope.save = function() {
 	
 	// SEND THE NEW CONTENT TO THE SERVER
 
-	var deviceData = {string: {name: $scope.name , description: $scope.description, owner: $scope.owner , tags: $scope.tags}};
+	var deviceData = {string: {name: $scope.name , description: $scope.description, owner: $scope.owner , tags: $scope.tags , id: $scope.id}};
 	var jsonDevice = JSON.stringify(deviceData);
 	$scope.styleSave="glyphicon glyphicon-transfer";
 	$http.post('/online/devices/'+$scope.name, deviceData).

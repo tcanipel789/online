@@ -42,7 +42,7 @@ app.get("/online/devices",function(req,res){
 });
 
 app.get("/online/devices/:ID/tags",function(req,res){
-	console.log('GET> the player : '+req.params.ID+ 'is requesting tags');
+	console.log('GET> the player : '+ req.params.ID + 'is requesting tags');
 	
 	var results = [];
 
@@ -127,10 +127,10 @@ app.post('/online/devices/:ID', function(req, res) {
 	var localip = data.string.localip || null;
 	var name = data.string.name || null;
 	var description = data.string.description || null;
-	var tags = parseInt(data.string.tags) || null;
 	var owner = parseInt(data.string.owner) || null;
 	var date = new Date().toISOString();
-	//var tags = data.string.tags || null;
+	var tags = data.string.tags || null;
+	var id = data.string.id || null;
 	
 	
 	console.log('POST> the player : '+req.params.ID+ ' is sending status information | ' + localip + ' | '+ temp + ' | '+ name);
@@ -139,7 +139,18 @@ app.post('/online/devices/:ID', function(req, res) {
     // Get a Postgres client from the connection pool
     pg.connect(connectionString, function(err, client, done) {
 		if (client != null){
-		    client.query("UPDATE devices SET temperature=coalesce(($1),temperature), localip=coalesce(($2),localip), lastseen =coalesce(($3),lastseen), description = coalesce(($4),description), tags = coalesce(($5),tags), owner = coalesce(($6),owner) WHERE name=($7)", [temp,localip,date,description,tags,owner,name], function(err, result) {
+		    client.query("UPDATE devices SET temperature=coalesce(($1),temperature), localip=coalesce(($2),localip), lastseen =coalesce(($3),lastseen), description = coalesce(($4),description), owner = coalesce(($5),owner) WHERE name=($6)", [temp,localip,date,description,owner,name], function(err, result) {
+			// INSERT ALL DEPENDANCIES TO TAGS
+			//TO DO
+			for (var i = 0; i < tags.length ; i++){
+				console.log("UPDATING : " + tags[i].selected + " "+tags[i].id_tag);
+				client.query("UPDATE device_tag SET selected=($1) WHERE (id_device=($2) AND id_tag=($3))", [tags[i].selected,id,tags[i].id_tag], function(err, result) {
+				done();
+				if(err) {
+				  return console.error('> Error running update', err);
+				}
+			  });
+			}
 			//call `done()` to release the client back to the pool
 			done();
 			if(err) {
