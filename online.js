@@ -3,21 +3,23 @@ var bodyParser = require('body-parser');
 var pg = require ('pg');
 var fs = require ('fs');
 var app = express();
+var Client = require('ftp');
 
 var mock = 0;
-var devices = [];
 
 app.set('port', (process.env.PORT || 5000));
 app.use(bodyParser.json()); // for parsing application/json
 app.use(express.static('public'));
 
+var connectionString = process.env.HEROKU_POSTGRESQL_COPPER_URL || 'postgres://csvpsujaljamxy:gcjhDnpk7mFfLVhz7KbP0Qhy5w@ec2-50-19-208-138.compute-1.amazonaws.com:5432/d6dss85etufrmo?ssl=true';
+		//update the media list and store it in the database
+var connectionProperties = {host: "online.royalwebhosting.net",user: "1942016",password: "hellmaster"};
+
+
 app.get("/online",function(req,res){
 	res.sendfile("./public/htm/online.html");
 });
 
-var connectionString = process.env.HEROKU_POSTGRESQL_COPPER_URL || 'postgres://csvpsujaljamxy:gcjhDnpk7mFfLVhz7KbP0Qhy5w@ec2-50-19-208-138.compute-1.amazonaws.com:5432/d6dss85etufrmo?ssl=true';
-
-	
 app.get("/online/devices",function(req,res){
 	console.log("GET > retrieving devices");
 
@@ -32,8 +34,7 @@ app.get("/online/devices",function(req,res){
 			if(err) {
 			  return console.error('> Error running update', err);
 			}
-			
-			devices = results;
+
 			return res.json(result.rows);
 		});
 			
@@ -80,12 +81,25 @@ app.get("/online/tags",function(req,res){
 });
 
 app.get("/online/medias",function(req,res){
-	//TODO media storage
 	console.log("GET > retrieving medias");
-	var medias = [
-		{id:'1', name:'storefront-solaris', type:'video',  tags: 'test', validity: 'always'}
-		];
-	res.send(medias);
+	
+	var results = [];
+
+    // Get a Postgres client from the connection pool
+    pg.connect(connectionString, function(err, client, done) {
+		if (client != null){
+		client.query("SELECT * FROM medias ORDER BY id ASC;", function(err, result) {
+			//call `done()` to release the client back to the pool
+			done();
+			if(err) {
+			  return console.error('> Error running update', err);
+			}
+			
+			return res.json(result.rows);
+		});
+			
+    }});
+	
 });
 
 app.get("/online/broadcasts",function(req,res){

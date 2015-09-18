@@ -1,8 +1,8 @@
- <h3>Medias</h3>
+<div ng-show="listVisible">
 
- <button class="btn btn-success">
-       Add media &nbsp;<span class="glyphicon glyphicon-plus-sign"/>
-</button>
+<h3>Medias  <button class="btn" ng-click="reload()">
+	<span ng-class="stylereload"></span>
+</button></h3>
  
 <table class="table table-striped">
   <thead><tr>
@@ -10,7 +10,7 @@
     <th>Type</th>
     <th>Tags</th>
 	<th>Validity</th>
-	<th>Action</th>
+	<th class="text-right"><span  class="label label-default">{{medias.length}}</span></th>
   </tr></thead>
   <tbody><tr ng-repeat="media in medias">
     <td>
@@ -21,7 +21,7 @@
     </td>
 	<td>{{ media.tags }}</td>
 	<td>{{ media.validity }}</td>
-	<td>
+	<td  class="col-md-6 text-right">
       <button class="btn">
         <span class="glyphicon glyphicon-pencil"></span>
       </button>

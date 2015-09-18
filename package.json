@@ -9,7 +9,8 @@
   "dependencies": {
     "body-parser": "1.13.3",
     "express": "4.13.1",
-	"pg": "4.4.1"
+	"pg": "4.4.1",
+	"ftp": "0.3.10"
   },
   "engines": {
     "node": "0.12.4"

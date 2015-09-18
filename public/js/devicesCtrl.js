@@ -1,8 +1,6 @@
 
 app.controller('deviceCtrl', function($scope, $http) {
 
-
-
 $scope.isVisible = false;
 $scope.tagVisible = false;
 
@@ -19,6 +17,7 @@ $scope.edit = true;
 $scope.error = false;
 $scope.incomplete = false;
 $scope.listVisible = true;
+$scope.isTansferVisible = true;
 
 $scope.styleSave="glyphicon glyphicon-save";
 $scope.stylereload = "glyphicon glyphicon-refresh";
@@ -63,6 +62,7 @@ $scope.getDevicesTags = function() {
 	$http.get('/online/devices/'+$scope.id+'/tags').
 	  success(function(data, status, headers, config) {
 		$scope.tags = data;
+		$scope.isTansferVisible = false;
 	  }).
 	  error(function(data, status, headers, config) {
 	   $scope.tagerror = 'error when retrieving selected tags';
