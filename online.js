@@ -80,6 +80,24 @@ app.get("/online/tags",function(req,res){
     }});
 });
 
+app.get("/online/medias/types",function(req,res){
+	console.log('GET> retrieving media types');
+	var results = [];
+
+	pg.connect(connectionString, function(err, client, done) {
+		if (client != null){
+		client.query("SELECT * FROM mediatypes;", function(err, result) {
+			//call `done()` to release the client back to the pool
+			done();
+			if(err) {
+			  return console.error('> Error fetching media types', err);
+			}
+			return res.json(result.rows);
+		});
+			
+    }});
+});
+
 app.get("/online/medias",function(req,res){
 	console.log("GET > retrieving medias");
 	
@@ -101,6 +119,87 @@ app.get("/online/medias",function(req,res){
     }});
 	
 });
+
+app.post("/online/medias/r/",function(req,res){
+	var data = req.body;
+	var id = data.string.id || null;
+	
+	if( id != null){
+		
+		pg.connect(connectionString, function(err, client, done) {
+			if (client != null){
+				console.log("> Remove media "+ id);
+				client.query("DELETE FROM medias WHERE id=($1)", [id], function(err, result){
+				done();
+					if(err) {
+					  return console.error('> Error running update', err);
+					}
+				res.sendStatus(200);
+				});
+			}
+		});
+	}else{
+		res.sendStatus(500);
+	}
+});
+
+app.post('/online/medias/:ID', function(req, res) {
+	var data = req.body;
+	
+	var name = data.string.name || null;
+	var ftplink = data.string.ftplink || null;
+	var owner = '1';//TODO, data.string.owner || null;
+	var date = new Date().toISOString();
+	var tags = data.string.tags || null;
+	var sha1 = data.string.sha1 || null;
+	var type = data.string.type || null;
+	var id = data.string.id || null;
+	
+	
+	console.log('POST> the media : '+req.params.ID+ ' is sending information| ');
+	
+	
+    // Get a Postgres client from the connection pool
+    pg.connect(connectionString, function(err, client, done) {
+		if (client != null){
+			console.log("> Trying to updating an existing media "+ name);
+		    client.query("UPDATE medias SET name=coalesce(($1),name), ftplink=coalesce(($2),ftplink), owner =coalesce(($3),owner),type =coalesce(($4),type) WHERE id=($5)", [name,ftplink,owner,type,id], function(err, result) {
+			// INSERT ALL DEPENDANCIES TO TAGS
+			//TO DO
+			// if (tags != null){
+				// for (var i = 0; i < tags.length ; i++){
+					// console.log("UPDATING : " + tags[i].selected + " "+tags[i].id_tag);
+					// client.query("UPDATE media_tag SET selected=($1) WHERE (id_media=($2) AND id_tag=($3))", [tags[i].selected,id,tags[i].id_tag], function(err, result) {
+					// done();
+					// if(err) {
+					  // return console.error('> Error running update', err);
+					// }
+				  // });
+				// }
+			// }
+			//call `done()` to release the client back to the pool
+			done();
+			if(err) {
+			  return console.error('> Error running update', err);
+			}
+			res.sendStatus(200);
+			if (result.rowCount ==  0){
+				  console.log("> Insert a new media");
+				  client.query("INSERT INTO medias(name,ftplink,owner,sha1,created,type) values($1,$2,$3,$4,$5,$6)", [name,ftplink,owner,sha1,date,type], function(err, result) {
+					//call `done()` to release the client back to the pool
+					done();
+					if(err) {
+					  return console.error('> Error running insert', err);
+					}
+					//output: 1
+				  });
+				  return ;
+			}
+			//output: 1
+		  });
+    }});
+});
+
 
 app.get("/online/broadcasts",function(req,res){
 	//TODO broadcast storage

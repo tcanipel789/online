@@ -70,20 +70,6 @@ $scope.getDevicesTags = function() {
 	  });
   }
 };
-/*
-$scope.getTags = function() {
-  if ($scope.playerVisible == true ){
-	$http.get('/online/tags').
-	  success(function(data, status, headers, config) {
-		$scope.temptags = data;
-	  }).
-	  error(function(data, status, headers, config) {
-	   console.log("error when retrieving tags");
-	  });
-  }
-};
-*/
-
 
 $scope.editDevice = function(id) {
 	$scope.isVisible = true;

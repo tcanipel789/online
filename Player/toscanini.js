@@ -13,6 +13,7 @@ var playlistsPath = "/playlist/"; // "./playlist/" // PLAYLIST FOLDER ON DEVICE
 var mediasPath = "/medias/";    // "/medias/"   // MEDIAS FOLDER ON DEVICE
 var _temp = '-';
 var _mac  = getMac();
+var _mem = '-';
 var refresh = "/online/broadcasts/"+_mac; // URL WITH PLAYER NAME
 
 /*
@@ -125,9 +126,24 @@ var removeMedia = function(name){
 */
 var deviceInformation = function (){
 	
-  var deviceData =  {name: _mac, temp: getTemperature(), localip: getIPAddress()};
+  var deviceData =  {name: _mac, temp: getTemperature(), localip: getIPAddress() , description : getMemory()};
   var jsonDevice = JSON.stringify(deviceData);
   httpPost(jsonDevice,'/online/devices/'+_mac);
+}
+
+/*
+/ GET MEMORY INFORMATION
+*/
+function getMemory() {
+ var child = exec('free -o -h',
+	  function (error, stdout, stderr) {
+		if (error !== null) {
+		  console.log('=> error: memory run only on PI2');
+		}else{
+			_mem = stdout.substring(255);
+		}
+	});
+  return _mem;
 }
 
 /*
