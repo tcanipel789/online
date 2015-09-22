@@ -10,6 +10,7 @@ $scope.tags = '';
 $scope.temptags = '';
 $scope.lastseen = '';
 $scope.created = '';
+$scope.memory = '';
 $scope.description = '';
 $scope.owner = '';
 
@@ -93,6 +94,7 @@ $scope.editDevice = function(id) {
 	$scope.created = $scope.devices[index].created;
 	$scope.localip = $scope.devices[index].localip;
 	$scope.description =  $scope.devices[index].description;
+	$scope.memory = $scope.devices[index].memory;
 	$scope.id = id;
 	$scope.getDevicesTags();
 	
