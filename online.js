@@ -243,6 +243,7 @@ app.post('/online/devices/:ID', function(req, res) {
 	var owner = parseInt(data.string.owner) || null;
 	var date = new Date().toISOString();
 	var tags = data.string.tags || null;
+	var memory = data.string.memory || null;
 	var id = data.string.id || null;
 	
 	
@@ -252,7 +253,7 @@ app.post('/online/devices/:ID', function(req, res) {
     // Get a Postgres client from the connection pool
     pg.connect(connectionString, function(err, client, done) {
 		if (client != null){
-		    client.query("UPDATE devices SET temperature=coalesce(($1),temperature), localip=coalesce(($2),localip), lastseen =coalesce(($3),lastseen), description = coalesce(($4),description), owner = coalesce(($5),owner) WHERE name=($6)", [temp,localip,date,description,owner,name], function(err, result) {
+		    client.query("UPDATE devices SET temperature=coalesce(($1),temperature), localip=coalesce(($2),localip), lastseen =coalesce(($3),lastseen), description = coalesce(($4),description), owner = coalesce(($5),owner), memory = coalesce(($6),memory) WHERE name=($7)", [temp,localip,date,description,owner,memory,name], function(err, result) {
 			// INSERT ALL DEPENDANCIES TO TAGS
 			//TO DO
 			if (tags != null){

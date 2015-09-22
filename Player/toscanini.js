@@ -126,7 +126,7 @@ var removeMedia = function(name){
 */
 var deviceInformation = function (){
 	
-  var deviceData =  {name: _mac, temp: getTemperature(), localip: getIPAddress() , description : getMemory()};
+  var deviceData =  {name: _mac, temp: getTemperature(), localip: getIPAddress() , memory : getMemory()};
   var jsonDevice = JSON.stringify(deviceData);
   httpPost(jsonDevice,'/online/devices/'+_mac);
 }
