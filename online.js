@@ -310,7 +310,7 @@ app.post('/online/devices/:ID', function(req, res) {
 			if(err) {
 			  return console.error('> Error running update', err);
 			}
-			//res.end(200);
+			res.end(200);
 			if (result.rowCount ==  0){
 				  console.log("> Insert a new device");
 				  client.query("INSERT INTO devices(name,localip,created) values($1,$2,$3)", [name,localip,date], function(err, result) {
@@ -326,7 +326,7 @@ app.post('/online/devices/:ID', function(req, res) {
 			//output: 1
 		  });
     }});
-	res.send(200);
+	res.end("200");
 });
 
 
