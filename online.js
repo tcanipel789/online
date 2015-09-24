@@ -287,7 +287,7 @@ app.post('/online/devices/:ID', function(req, res) {
 	var id = data.string.id || null;
 	
 	console.log('POST> the player : '+req.params.ID+ ' is sending status information | ' + localip + ' | '+ temp + ' | '+ name);
-	
+	res.end("ok");
     // Get a Postgres client from the connection pool
     pg.connect(connectionString, function(err, client, done) {
 		if (client != null){
@@ -310,7 +310,7 @@ app.post('/online/devices/:ID', function(req, res) {
 			if(err) {
 			  return console.error('> Error running update', err);
 			}
-			res.end(200);
+			//res.end(200);
 			if (result.rowCount ==  0){
 				  console.log("> Insert a new device");
 				  client.query("INSERT INTO devices(name,localip,created) values($1,$2,$3)", [name,localip,date], function(err, result) {
@@ -326,7 +326,6 @@ app.post('/online/devices/:ID', function(req, res) {
 			//output: 1
 		  });
     }});
-	res.end("200");
 });
 
 
