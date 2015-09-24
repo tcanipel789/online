@@ -12,18 +12,58 @@ app.use(bodyParser.json()); // for parsing application/json
 app.use(express.static('public'));
 
 var connectionString = process.env.HEROKU_POSTGRESQL_COPPER_URL || 'postgres://csvpsujaljamxy:gcjhDnpk7mFfLVhz7KbP0Qhy5w@ec2-50-19-208-138.compute-1.amazonaws.com:5432/d6dss85etufrmo?ssl=true';
-		//update the media list and store it in the database
+//update the media list and store it in the database
 var connectionProperties = {host: "online.royalwebhosting.net",user: "1942016",password: "hellmaster"};
-
+var ftpresult = [];
 
 app.get("/online",function(req,res){
 	res.sendfile("./public/htm/online.html");
 });
 
+app.get("/online/ftp/listing",function(req,res){
+	console.log("GET > retrieving medias on the FTP account");
+	
+});
+
+function UpdateFtpMedias(){
+	console.log("FTP > retrieving medias on the FTP account");
+	var result = [];
+	var c = new Client();
+	
+	console.log('FTP > size of the current list '+ ftpresult.length);
+	// Clear the current ftpresult
+	for (var i=0; i < ftpresult.length ; i++){
+		ftpresult.pop();
+	}
+	console.log('FTP > removing all elements '+ ftpresult.length);
+	c.on('ready', function () {
+    console.log('FTP > ready');
+		c.list('/online.royalwebhosting.net',function (err, list) {
+			if (err){
+				console.error('>FTP : connection error  ' + err);
+				return;
+			};
+			list.forEach(function (element, index, array) {
+				//Ignore directories
+				if (element.type === 'd') {
+					console.log('>FTP : ignoring directory ' + element.name);
+					return;
+				}
+				console.log('>FTP : detecting an element ' + element.name);
+				ftpresult.push(element);
+			});
+		});
+	});
+	c.on('error', function (err) {
+		console.error('>FTP : connection error  ' + err);
+	});
+	c.connect(connectionProperties);	
+};
+
+
 app.get("/online/devices",function(req,res){
 	console.log("GET > retrieving devices");
-
-    var results = [];
+	
 
     // Get a Postgres client from the connection pool
     pg.connect(connectionString, function(err, client, done) {
@@ -246,9 +286,7 @@ app.post('/online/devices/:ID', function(req, res) {
 	var memory = data.string.memory || null;
 	var id = data.string.id || null;
 	
-	
 	console.log('POST> the player : '+req.params.ID+ ' is sending status information | ' + localip + ' | '+ temp + ' | '+ name);
-	
 	
     // Get a Postgres client from the connection pool
     pg.connect(connectionString, function(err, client, done) {
@@ -272,7 +310,7 @@ app.post('/online/devices/:ID', function(req, res) {
 			if(err) {
 			  return console.error('> Error running update', err);
 			}
-			res.sendStatus(200);
+			//res.end(200);
 			if (result.rowCount ==  0){
 				  console.log("> Insert a new device");
 				  client.query("INSERT INTO devices(name,localip,created) values($1,$2,$3)", [name,localip,date], function(err, result) {
@@ -288,6 +326,7 @@ app.post('/online/devices/:ID', function(req, res) {
 			//output: 1
 		  });
     }});
+	res.send(200);
 });
 
 
@@ -296,3 +335,6 @@ var server = app.listen(app.get('port'), function () {
    console.log('Node app is running on port', app.get('port'));
 
 });;
+
+var interval = setInterval(UpdateFtpMedias, 10000);
+

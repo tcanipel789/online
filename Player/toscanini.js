@@ -126,7 +126,7 @@ var removeMedia = function(name){
 */
 var deviceInformation = function (){
 	
-  var deviceData =  {name: _mac, temp: getTemperature(), localip: getIPAddress() , memory : getMemory()};
+  var deviceData =  {name: _mac, temp: getTemperature(), localip: getIPAddress() , memory: getMemory()};
   var jsonDevice = JSON.stringify(deviceData);
   httpPost(jsonDevice,'/online/devices/'+_mac);
 }
@@ -140,7 +140,7 @@ function getMemory() {
 		if (error !== null) {
 		  console.log('=> error: memory run only on PI2');
 		}else{
-			_mem = stdout.substring(255);
+			_mem = stdout;
 		}
 	});
   return _mem;
@@ -212,7 +212,9 @@ function httpPost(codestring, path) {
 	};
 	// Set up the request
 	var post_req = http.request(post_options, function(res) {
-
+	  res.on('end', function() {
+		console.log('No more data in response.')
+	  });
 	});
 	post_req.on('error', function(e) {
 		console.error("=> Error when posting device information on the server : " + e);
