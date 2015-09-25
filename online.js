@@ -4,6 +4,7 @@ var pg = require ('pg');
 var fs = require ('fs');
 var app = express();
 var Client = require('ftp');
+var http = require('http');
 
 var mock = 0;
 
@@ -15,6 +16,26 @@ var connectionString = process.env.HEROKU_POSTGRESQL_COPPER_URL || 'postgres://c
 //update the media list and store it in the database
 var connectionProperties = {host: "online.royalwebhosting.net",user: "1942016",password: "hellmaster"};
 var ftpresult = [];
+
+function cb (err){
+	console.log("download finished "+ err);
+}
+
+function download (url, cb) {
+	console.log("download");
+  var dest="test.h264";
+  var file = fs.createWriteStream(dest);
+  var request = http.get(url, function(response) {
+    response.pipe(file);
+    file.on('finish', function() {
+      file.close(cb);  // close() is async, call cb after close completes.
+    });
+  }).on('error', function(err) { // Handle errors
+    fs.unlink(dest); // Delete the file async. (But we don't check the result)
+    if (cb) cb(err.message);
+  });
+};
+//download("http://download2.dvdloc8.com/trailers/divxdigest/star_wars_blu-ray-trailer.zip",cb);
 
 app.get("/online",function(req,res){
 	res.sendfile("./public/htm/online.html");
@@ -408,7 +429,7 @@ app.get("/online/broadcasts/:PLAYER",function(req,res){
 	//MOCK
 	var url = null;
 	if (mock == 0){
-		url = "/online/broadcasts/dl"+req.params.PLAYER+"/1234";
+		//url = "/online/broadcasts/dl"+req.params.PLAYER+"/1234";
 		mock = 1;
 	}
 	res.send(url);
