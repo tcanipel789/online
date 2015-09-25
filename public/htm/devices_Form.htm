@@ -42,11 +42,13 @@
   <div class="panel-heading">Profiling Tags {{tagerror}}</div>
   <div class="panel-body"> 
 <label ng-repeat="tag in tags">
- &nbsp; <button class="btn" ng-class="tag.selected? 'btn-sucess' : 'btn-warning'" type="checkbox"
+  &nbsp;<input
+    type="checkbox"
     value="{{tag.name}}"
     ng-checked="{{tag.selected}}"
-    ng-click="toggleSelection(tag)">{{tag.name}}&nbsp;</button>
-</label>
+    ng-click="toggleSelection(tag)"
+  > {{tag.name}}
+&nbsp;</label>
 </div>
 </div>
 </div>
