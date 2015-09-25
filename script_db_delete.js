@@ -12,6 +12,7 @@ var query = client3.query('DELETE FROM device_tag');
 query.on('end', function() { client3.end(); });
 
 
+
 var client4 = new pg.Client(connectionString);
 client4.connect();
 var query = client4.query('DELETE FROM medias');
