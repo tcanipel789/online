@@ -90,6 +90,8 @@ $scope.reload = function() {
 $scope.editBroadcast = function(id) {
 	$scope.listVisible = false;
 	$scope.isVisible = true;
+	$scope.tagVisible = false;
+	$scope.mediaVisible = false;
 	
 	var index = 0;
 	var numBroadcast;
@@ -106,6 +108,9 @@ $scope.editBroadcast = function(id) {
 	$scope.dateto = $scope.broadcasts[index].dateto;
 	$scope.created = $scope.broadcasts[index].created;
 	$scope.id = id;
+	$scope.tags=[];
+	$scope.medias=[];
+	
 	
 	$scope.getTags();
 	$scope.getMedias();
@@ -139,7 +144,7 @@ $scope.save = function() {
 	// SEND THE NEW CONTENT TO THE SERVER
 	var data = {string: {id: $scope.id , name : $scope.name, datefrom: $scope.datefrom, dateto:$scope.dateto , owner: $scope.owner, tags: $scope.tags, medias: $scope.medias}};
 	$scope.styleSave="glyphicon glyphicon-transfer";
-	$http.post('/online/broadcasts/new', data).
+	$http.post('/online/broadcasts/brd', data).
 	  then(function(response) {
 		if (response.status == 200){
 			$scope.styleSave="glyphicon glyphicon-save";

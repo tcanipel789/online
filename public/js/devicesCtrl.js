@@ -77,6 +77,7 @@ $scope.getDevicesTags = function() {
 $scope.editDevice = function(id) {
 	$scope.isVisible = true;
 	$scope.listVisible = false;
+	$scope.tagVisible = false;
 
 	var index = 0;
 	var numDevices;
@@ -98,6 +99,7 @@ $scope.editDevice = function(id) {
 	$scope.description =  $scope.devices[index].description;
 	$scope.memory = $scope.devices[index].memory;
 	$scope.id = id;
+	$scope.tags = [];
 	$scope.getDevicesTags();
 	
 };
