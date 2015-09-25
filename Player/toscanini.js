@@ -128,7 +128,6 @@ var removeMedia = function(name){
 var deviceInformation = function (){
   
   var deviceData =  {name: _mac, temp: _temp, localip: _ip , memory: _mem};
-  console.log(_temp + _mem);
   var jsonDevice = JSON.stringify(deviceData);
   httpPost(jsonDevice,'/online/devices/'+_mac);
   getMemory();
