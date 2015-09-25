@@ -408,15 +408,15 @@ app.get("/online/broadcasts/:PLAYER",function(req,res){
 	//MOCK
 	var url = null;
 	if (mock == 0){
-		url = "/online/broadcasts/"+req.params.PLAYER+"/1234";
+		url = "/online/broadcasts/dl"+req.params.PLAYER+"/1234";
 		mock = 1;
 	}
 	res.send(url);
 });
 
-app.get("/online/broadcasts/:PLAYER/player",function(req,res){
+app.get("/online/broadcasts/dl/:PLAYER/:PLAYLIST",function(req,res){
 	//TODO get the broadcast corresponding to the player
-	console.log("GET > retrieving broadcasts , player : " + req.params.PLAYER);
+	console.log("GET > retrieving broadcasts :"+req.params.PLAYLIST+", player : " + req.params.PLAYER);
 	var broadcastObj = {'name':'trainingroom', 'medias': [{'name': 'sw7.h264', 'link': 'sw7.h264'},{'name': 'carlipa.h264', 'link': 'carlipa.h264'}]};
 	res.send(broadcastObj);
 });
