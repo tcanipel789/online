@@ -59,6 +59,7 @@ $scope.reload = function() {
   
 
 $scope.getDevicesTags = function() {
+	$scope.isTansferVisible = true;
   if ($scope.playerVisible == true ){
 	$http.get('/online/devices/'+$scope.id+'/tags').
 	  success(function(data, status, headers, config) {
@@ -68,6 +69,7 @@ $scope.getDevicesTags = function() {
 	  error(function(data, status, headers, config) {
 	   $scope.tagerror = 'error when retrieving selected tags';
 	   console.log("error when retrieving selected tags");
+	   $scope.isTansferVisible = false;
 	  });
   }
 };

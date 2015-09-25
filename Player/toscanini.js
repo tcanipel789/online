@@ -14,6 +14,7 @@ var mediasPath = "/medias/";    // "/medias/"   // MEDIAS FOLDER ON DEVICE
 var _temp = '-';
 var _mac  = getMac();
 var _mem = '-';
+var _ip ='-';
 var refresh = "/online/broadcasts/"+_mac; // URL WITH PLAYER NAME
 
 /*
@@ -125,10 +126,14 @@ var removeMedia = function(name){
 // DEVICE INFORMATION GENERATOR
 */
 var deviceInformation = function (){
-	
-  var deviceData =  {name: _mac, temp: getTemperature(), localip: getIPAddress() , memory: getMemory()};
+  
+  var deviceData =  {name: _mac, temp: _temp, localip: _ip , memory: _mem};
+  console.log(_temp + _mem);
   var jsonDevice = JSON.stringify(deviceData);
   httpPost(jsonDevice,'/online/devices/'+_mac);
+  getMemory();
+  getIPAddress();
+  getTemperature();
 }
 
 /*
@@ -143,7 +148,6 @@ function getMemory() {
 			_mem = stdout;
 		}
 	});
-  return _mem;
 }
 
 /*
@@ -157,11 +161,9 @@ function getIPAddress() {
     for (var i = 0; i < iface.length; i++) {
       var alias = iface[i];
       if (alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal)
-        return alias.address;
+        _ip =  alias.address;
     }
   }
-
-  return '0.0.0.0';
 }
 /*
 / GET TEMPERATURE
@@ -175,7 +177,6 @@ function getTemperature() {
 			_temp = stdout.substring(5); // just get the temperature
 		}
 	});
-  return _temp;
 }
 
 function getMac(){
@@ -212,9 +213,7 @@ function httpPost(codestring, path) {
 	};
 	// Set up the request
 	var post_req = http.request(post_options, function(res) {
-	  res.on('end', function() {
-		console.log('No more data in response.')
-	  });
+		 console.log('>HTTP STATUS: ' + res.statusCode);
 	});
 	post_req.on('error', function(e) {
 		console.error("=> Error when posting device information on the server : " + e);
@@ -224,8 +223,8 @@ function httpPost(codestring, path) {
 	post_req.end();
 }
 
-var interval = setInterval(deviceInformation, 60000);
-var interval = setInterval(downloadManager, 10000);
-var interval = setInterval(updatePlaylist, 10000);
+setInterval(deviceInformation, 60000);
+setInterval(downloadManager, 10000);
+setInterval(updatePlaylist, 10000);
 
 

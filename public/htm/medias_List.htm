@@ -10,7 +10,6 @@
   <thead><tr>
     <th>Name</th>
     <th>Type</th>
-    <th>Tags</th>
 	<th>Created</th>
 	<th class="text-right"><span  class="label label-default">{{medias.length}}</span></th>
   </tr></thead>
@@ -21,7 +20,6 @@
     <td>
 			<button class="btn disabled" >{{ media.type }}</button>
     </td>
-	<td>{{ media.tags }}</td>
 	<td><button class="btn disabled" >{{ media.created }}</button></td>
 	<td  class="col-md-6 text-right">
 	 <button class="btn" ng-click="removeMedia(media.id)">

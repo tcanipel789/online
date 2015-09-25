@@ -26,3 +26,20 @@ var client5 = new pg.Client(connectionString);
 client5.connect();
 var query = client5.query('CREATE TABLE mediatypes (id SERIAL PRIMARY KEY, name VARCHAR(100) not null)');
 query.on('end', function() { client5.end(); });
+
+var client6 = new pg.Client(connectionString);
+client6.connect();
+var query = client6.query('CREATE TABLE broadcasts (id SERIAL PRIMARY KEY, name VARCHAR(100) not null, datefrom VARCHAR(25),dateto VARCHAR(25),created VARCHAR(25),owner INT)');
+query.on('end', function() { client6.end(); });
+
+
+var client7 = new pg.Client(connectionString);
+client7.connect();
+var query = client7.query('CREATE TABLE broadcast_tag (id SERIAL PRIMARY KEY, id_broadcast INT not null, id_tag INT not null, selected BOOLEAN)');
+query.on('end', function() { client7.end(); });
+
+
+var client8 = new pg.Client(connectionString);
+client8.connect();
+var query = client8.query('CREATE TABLE broadcast_media (id SERIAL PRIMARY KEY, id_broadcast INT not null, id_media INT not null, selected BOOLEAN)');
+query.on('end', function() { client8.end(); });

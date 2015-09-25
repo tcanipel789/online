@@ -54,7 +54,6 @@ $scope.getTypes= function() {
 	$http.get('/online/medias/types').
 	  success(function(data, status, headers, config) {
 		$scope.types = data;
-		console.log($scope.types);
 	  }).
 	  error(function(data, status, headers, config) {
 	   console.log("error when retrieving types");
@@ -62,21 +61,6 @@ $scope.getTypes= function() {
   }
 };
 
-
-
-$scope.getMediasTags = function() {
-  if ($scope.mediaVisible == true ){
-	$http.get('/online/medias/'+$scope.id+'/tags').
-	  success(function(data, status, headers, config) {
-		$scope.tags = data;
-		$scope.isTansferVisible = false;
-	  }).
-	  error(function(data, status, headers, config) {
-	   $scope.tagerror = 'error when retrieving selected tags';
-	   console.log("error when retrieving selected tags");
-	  });
-  }
-};
 
 $scope.showTag = function(){
 	if ($scope.tagVisible){
